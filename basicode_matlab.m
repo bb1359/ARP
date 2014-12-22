@@ -1,5 +1,5 @@
-clc
-clear
+%clc
+%clear
 
 % x =
 % [1  2  3  4    5    6    7    8    9   ...]
@@ -61,17 +61,24 @@ function xdot = f (x,t)
     d = 0.8;
     xdot(1) = r*x(1)*(1 - x(1)/k) - a*x(1)*x(2)/(1 + b*x(1));
     xdot(2) = c*a*x(1)*x(2)/(1 + b*x(1)) - d*x(2);     
-endfunction
+end
  
-#
-# Using LSODE again, with initial conditions x(1)=1 and x(2)=2 on [0,50] with 200 points:
-#
+%
+% Using LSODE again, with initial conditions x(1)=1 and x(2)=2 on [0,50] with 200 points:
+%
 
-x = lsode ("f", [1; 2], (t = linspace (0, 50, 200)'));
+%OCTAVE implementation
+%x = lsode ("f", [1; 2], (t = linspace (0, 50, 200)'));
+%
+%MATLAB implementation
+function izracunaj
+    ode45(@f, [1;2], [0;50;200]);
+    %ode45(@moskon, ones(19,1), [0;1;1000]');
+end
 
-x2 = lsode ("moskon", ones(19,1), (t2=linspace(0,1,1000)'));
+%x2 = lsode ("moskon", ones(19,1), (t2=linspace(0,1,1000)'));
 
-graphics_toolkit("gnuplot")
-#set term dumb;
-plot(t2,x2);
+%graphics_toolkit("gnuplot")
+%#set term dumb;
+%plot(t2,x2);
 
