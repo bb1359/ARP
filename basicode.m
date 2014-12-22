@@ -3,7 +3,7 @@ clear
 
 ode_start = 0;
 ode_end = 75;
-ode_n = 10000;
+ode_n = 5000;
 
 t2 = linspace(ode_start,ode_end,ode_n)';
 startValues = [1 0.3 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]';
