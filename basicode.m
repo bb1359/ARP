@@ -2,14 +2,14 @@ clc
 clear
 
 ode_start = 0;
-ode_end = 100;
-ode_n = 1000;
+ode_end = 75;
+ode_n = 10000;
 
 t2 = linspace(ode_start,ode_end,ode_n)';
-startValues = [1 1 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]';
+startValues = [1 0.3 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]';
 
 if(exist('OCTAVE_VERSION', 'builtin') ~= 0)
-  lsode_options('maximum step size', 0.99);
+  %lsode_options('maximum step size', 0.5);
   x2 = lsode ("moskon_full", startValues, t2);
   graphics_toolkit("gnuplot")
 else
@@ -23,3 +23,4 @@ legend('A2', 'B2', 'E2', 'IFN');
 %           "A",  "B",  "E",  "I",  
 %           "A2", "B2", "E2", 
 %           "mA", "mB", "mI");
+

@@ -25,8 +25,8 @@ function dx = moskon_full(x, t)
     g_a=10;g_b=10;g_i=10;
     d_a=1;d_b=1;d_i=1;d_e=1;
 
-    e_switch_point = 40;
-    e_switch_d = 2000;
+    e_switch_point = 25;
+    e_switch_d = 1000;
 	    
     dx(1) = -k1*pA*A2 + k_1*pAA2 - k2*pA*B2 + k_2*pAB2;
     dx(2) = -k3*pB*A2 + k_3*pBA2 - k4*pB*E2 + k_4*pBE2;
@@ -43,7 +43,7 @@ function dx = moskon_full(x, t)
     dx(11) = -2*k8*B^2 + 2*k_8*B2 + g_b*mB - d_b*B;
 
     %switch tabs with spaces!
-    if (t > e_switch_point) && (t < e_switch_point + 1) && (E > 0)
+    if (t > e_switch_point) && (t < e_switch_point+1) 
       dx(12) = e_switch_d;
     else
       dx(12) = -2*k9*E^2 + 2*k_9*E2 - d_e*E;
