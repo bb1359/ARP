@@ -4,7 +4,8 @@
 % [... 10 11 12 13 14 15 16 17 18 19]
 % [... A  B  E  I  A2 B2 E2 mA mB mI]
 
-function dx = moskon_full(x,t)
+function dx = moskon_full(x, t)
+
     pA = x(1); pB = x(2); pI = x(3);
     pAA2 = x(4); pAB2 = x(5);
     pBA2 = x(6); pBE2 = x(7);
@@ -23,8 +24,11 @@ function dx = moskon_full(x,t)
     a_a=5;a_b=1;a_i=5;
     g_a=10;g_b=10;g_i=10;
     d_a=1;d_b=1;d_i=1;d_e=1;
+
+    e_switch_point = 40;
+    e_switch_d = 2000;
 	    
-    dx(1) = -k1*pA*A2 + k_1*pBA2 - k2*pA*B2 + k_2*pAB2;
+    dx(1) = -k1*pA*A2 + k_1*pAA2 - k2*pA*B2 + k_2*pAB2;
     dx(2) = -k3*pB*A2 + k_3*pBA2 - k4*pB*E2 + k_4*pBE2;
     dx(3) = -k5*pI*B2 + k_5*pIB2 - k6*pI*I  + k_6*pII;
     
@@ -37,11 +41,14 @@ function dx = moskon_full(x,t)
     
     dx(10) = -2*k7*A^2 + 2*k_7*A2 + g_a*mA - d_a*A;
     dx(11) = -2*k8*B^2 + 2*k_8*B2 + g_b*mB - d_b*B;
-    dx(12) = -2*k9*E^2 + 2*k_9*E2          - d_e*E;
-	if t == 400
-		dx(12) = 1000
-	end
-	
+
+    %switch tabs with spaces!
+    if (t > e_switch_point) && (t < e_switch_point + 1) && (E > 0)
+      dx(12) = e_switch_d;
+    else
+      dx(12) = -2*k9*E^2 + 2*k_9*E2 - d_e*E;
+    end
+
     dx(13) = -k6*I*pI  + k_6*pII  + g_i*mI - d_i*I;
     
     dx(14) = -k1*pA*A2 + k_1*pAA2 - k3*A2*pB  + k_3*pBA2 + k7*A^2 - k_7*A2 - d_a*A2;
