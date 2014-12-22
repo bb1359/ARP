@@ -18,7 +18,8 @@ end
 
 p = plot(t2,x2(:, [14 15 16 13]));
 legend('A2', 'B2', 'E2', 'IFN');
-% legend(p, "pA", "pB", "pI", 
+%p = plot(t2, x2);
+%legend(p, "pA", "pB", "pI", 
 %           "pAA2", "pAB2", "pBA2", "pBE2", "pIB2", "pII", 
 %           "A",  "B",  "E",  "I",  
 %           "A2", "B2", "E2", 

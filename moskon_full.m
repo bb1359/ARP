@@ -25,7 +25,7 @@ function dx = moskon_full(x, t)
     g_a=10;g_b=10;g_i=10;
     d_a=1;d_b=1;d_i=1;d_e=1;
 
-    e_switch_point = 40;
+    e_switch_point = 25;
     e_switch_d = 2000;
 	    
     dx(1) = -k1*pA*A2 + k_1*pAA2 - k2*pA*B2 + k_2*pAB2;
