@@ -2,25 +2,33 @@ clc
 clear
 
 ode_start = 0;
-ode_end = 75;
+ode_end = 50;
 ode_n = 5000;
 
 t2 = linspace(ode_start,ode_end,ode_n)';
-startValues = [1 0.3 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]';
+frst = 0;
 
-if(exist('OCTAVE_VERSION', 'builtin') ~= 0)
-  %lsode_options('maximum step size', 0.5);
-  x2 = lsode ("moskon_full", startValues, t2);
-  graphics_toolkit("gnuplot")
+if(frst)
+  startValues = [1 0.3 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]';
+  fun = "moskon_full";
+  fun_m = @moskon_full;
+  toplot = [13 14 15 16];
 else
-  x2 = ode45(@moskon_full, [ode_start;ode_end;ode_n], startValues);
+  startValues = zeros(10,1);
+  fun = "moskon_simple";
+  fun_m = @moskon_simple;
+  toplot = [4 5 6 7];
 end
 
-p = plot(t2,x2(:, [14 15 16 13]));
-legend('A2', 'B2', 'E2', 'IFN');
-% legend(p, "pA", "pB", "pI", 
-%           "pAA2", "pAB2", "pBA2", "pBE2", "pIB2", "pII", 
-%           "A",  "B",  "E",  "I",  
-%           "A2", "B2", "E2", 
-%           "mA", "mB", "mI");
+
+if(exist('OCTAVE_VERSION', 'builtin') ~= 0)
+  x2 = lsode (fun, startValues, t2);
+  graphics_toolkit("gnuplot")
+else
+  x2 = ode45(fun_m, [ode_start;ode_end;ode_n], startValues);
+end
+
+p = plot(t2,x2(:, toplot));
+legend('IFN', 'A2', 'B2', 'E2');
+
 
