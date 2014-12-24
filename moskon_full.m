@@ -40,7 +40,7 @@ function dx = moskon_full(x, t, e_switch_point, e_switch_d)
     dx(11) = -2*k8*B^2 + 2*k_8*B2 + g_b*mB - d_b*B;
 
     %switch tabs with spaces!
-    if (t > e_switch_point) && (t < e_switch_point+1) 
+    if (t => e_switch_point) && (t < e_switch_point+1000) 
       dx(12) = e_switch_d;
     else
       dx(12) = -2*k9*E^2 + 2*k_9*E2 - d_e*E;
