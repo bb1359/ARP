@@ -4,7 +4,7 @@
 % [... 10 11 12 13 14 15 16 17 18 19]
 % [... A  B  E  I  A2 B2 E2 mA mB mI]
 
-function dx = moskon_full(x, t)
+function dx = moskon_full(x, t, e_switch_point, e_switch_d)
 
     pA = x(1); pB = x(2); pI = x(3);
     pAA2 = x(4); pAB2 = x(5);
@@ -25,9 +25,6 @@ function dx = moskon_full(x, t)
     g_a=10;g_b=10;g_i=10;
     d_a=1;d_b=1;d_i=1;d_e=1;
 
-    e_switch_point = 25;
-    e_switch_d = 1000;
-	    
     dx(1) = -k1*pA*A2 + k_1*pAA2 - k2*pA*B2 + k_2*pAB2;
     dx(2) = -k3*pB*A2 + k_3*pBA2 - k4*pB*E2 + k_4*pBE2;
     dx(3) = -k5*pI*B2 + k_5*pIB2 - k6*pI*I  + k_6*pII;

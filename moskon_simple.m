@@ -2,7 +2,7 @@
 % [1  2  3  4  5  6  7  8  9  10]
 % [A  B  E  I  A2 B2 E2 mA mB mI]
 
-function dx = moskon_full(x, t)
+function dx = moskon_simple(x, t, e_switch_point, e_switch_d)
 
     A = x(1); B = x(2); E = x(3); I = x(4);
     A2 = x(5); B2 = x(6); E2 = x(7);
@@ -18,9 +18,6 @@ function dx = moskon_full(x, t)
     a_a=5;a_b=1;a_i=5;
     g_a=10;g_b=10;g_i=10;
     d_a=1;d_b=1;d_i=1;d_e=1;
-
-    e_switch_point = 25;
-    e_switch_d = 1000;
 
     % Fractional occupancy for pA %
     pA_0 = 1;
@@ -38,7 +35,7 @@ function dx = moskon_full(x, t)
     pAB2 = p2*pA_0;
     
     % Fractional occupancy for pB %
-    pB_0 = 0.5;
+    pB_0 = 0.3;
     w0 = 1;
     w1 = A2/(k_3/k3);
     w2 = E2/(k_4/k4);
