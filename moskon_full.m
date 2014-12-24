@@ -4,7 +4,7 @@
 % [... 10 11 12 13 14 15 16 17 18 19]
 % [... A  B  E  I  A2 B2 E2 mA mB mI]
 
-function dx = moskon_full(x, t, e_switch_point, e_switch_d)
+function dx = moskon_full(x, t, args)
 
     pA = x(1); pB = x(2); pI = x(3);
     pAA2 = x(4); pAB2 = x(5);
@@ -14,16 +14,8 @@ function dx = moskon_full(x, t, e_switch_point, e_switch_d)
     A2 = x(14); B2 = x(15); E2 = x(16);
     mA = x(17); mB = x(18); mI = x(19);
     
-    k1=1;k2=1;k3=1;k4=1;k5=1;k6=1;
-    k_1=1;k_2=1;k_3=1;k_5=1;k_6=1;
-    k_4=0.1;
-    k7=1e-3;k8=k7;k9=k7;
-    k_7=1;k_8=1;k_9=1;
-    b_a=10;b_b=30;b_i=10;
-    fi=50;fi_a=50;
-    a_a=5;a_b=1;a_i=5;
-    g_a=10;g_b=10;g_i=10;
-    d_a=1;d_b=1;d_i=1;d_e=1;
+    argsCell = num2cell(args);
+    [e_switch_point e_switch_d pA_init pB_init pI_init k1 k2 k3 k4 k5 k6 k_1 k_2 k_3 k_5 k_6 k_4 k7 k8 k9 k_7 k_8 k_9 b_a b_b b_i fi fi_a a_a a_b a_i g_a g_b g_i d_a d_b d_i d_e] = argsCell{:};
 
     dx(1) = -k1*pA*A2 + k_1*pAA2 - k2*pA*B2 + k_2*pAB2;
     dx(2) = -k3*pB*A2 + k_3*pBA2 - k4*pB*E2 + k_4*pBE2;
@@ -39,8 +31,7 @@ function dx = moskon_full(x, t, e_switch_point, e_switch_d)
     dx(10) = -2*k7*A^2 + 2*k_7*A2 + g_a*mA - d_a*A;
     dx(11) = -2*k8*B^2 + 2*k_8*B2 + g_b*mB - d_b*B;
 
-    %switch tabs with spaces!
-    if (t => e_switch_point) && (t < e_switch_point+1000) 
+    if (t > e_switch_point) && (t < e_switch_point+1)
       dx(12) = e_switch_d;
     else
       dx(12) = -2*k9*E^2 + 2*k_9*E2 - d_e*E;

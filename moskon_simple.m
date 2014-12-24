@@ -2,25 +2,16 @@
 % [1  2  3  4  5  6  7  8  9  10]
 % [A  B  E  I  A2 B2 E2 mA mB mI]
 
-function dx = moskon_simple(x, t, e_switch_point, e_switch_d)
+function dx = moskon_simple(x, t, args) 
 
     A = x(1); B = x(2); E = x(3); I = x(4);
     A2 = x(5); B2 = x(6); E2 = x(7);
     mA = x(8); mB = x(9); mI = x(10);
     
-    k1=1;k2=1;k3=1;k4=1;k5=1;k6=1;
-    k_1=1;k_2=1;k_3=1;k_5=1;k_6=1;
-    k_4=0.1;
-    k7=1e-3;k8=k7;k9=k7;
-    k_7=1;k_8=1;k_9=1;
-    b_a=10;b_b=30;b_i=10;
-    fi=50;fi_a=50;
-    a_a=5;a_b=1;a_i=5;
-    g_a=10;g_b=10;g_i=10;
-    d_a=1;d_b=1;d_i=1;d_e=1;
+    argsCell = num2cell(args);
+    [e_switch_point e_switch_d pA_init pB_init pI_init k1 k2 k3 k4 k5 k6 k_1 k_2 k_3 k_5 k_6 k_4 k7 k8 k9 k_7 k_8 k_9 b_a b_b b_i fi fi_a a_a a_b a_i g_a g_b g_i d_a d_b d_i d_e] = argsCell{:};
 
     % Fractional occupancy for pA %
-    pA_0 = 1;
     w0 = 1;
     w1 = A2/(k_1/k1);
     w2 = B2/(k_2/k2);
@@ -30,13 +21,11 @@ function dx = moskon_simple(x, t, e_switch_point, e_switch_d)
     p1 = w1/wsum;
     p2 = w2/wsum;
 
-    pA = p0*pA_0;
-    pAA2 = p1*pA_0;
-    pAB2 = p2*pA_0;
+    pA   = p0*pA_init;
+    pAA2 = p1*pA_init;
+    pAB2 = p2*pA_init;
     
     % Fractional occupancy for pB %
-    pB_0 = 0.3;
-    w0 = 1;
     w1 = A2/(k_3/k3);
     w2 = E2/(k_4/k4);
     wsum = w0+w1+w2;
@@ -45,13 +34,11 @@ function dx = moskon_simple(x, t, e_switch_point, e_switch_d)
     p1 = w1/wsum;
     p2 = w2/wsum;
 
-    pB = p0*pB_0;
-    pBA2 = p1*pB_0;
-    pBE2 = p2*pB_0;
+    pB   = p0*pB_init;
+    pBA2 = p1*pB_init;
+    pBE2 = p2*pB_init;
 	    
     % Fractional occupancy for pI %
-    pI_0 = 1;
-    w0 = 1;
     w1 = B2/(k_5/k5);
     w2 = I/(k_6/k6);
     wsum = w0+w1+w2;
@@ -60,9 +47,9 @@ function dx = moskon_simple(x, t, e_switch_point, e_switch_d)
     p1 = w1/wsum;
     p2 = w2/wsum;
 
-    pI = p0*pI_0;
-    pIB2 = p1*pI_0;
-    pII = p2*pI_0;
+    pI   = p0*pI_init;
+    pIB2 = p1*pI_init;
+    pII  = p2*pI_init;
 
     % the rest of equations %
     dx(1) = -2*k7*A^2 + 2*k_7*A2 + g_a*mA - d_a*A;
