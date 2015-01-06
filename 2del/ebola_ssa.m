@@ -51,7 +51,7 @@ base_vector = zeros(1,19);
 % pA + A2 => pAA2
 r1 = base_vector;	p1 = base_vector;
 r1([1,14]) = 1;		p1(4) = 1;
-c1 = k1;
+c1 = k1/OMEGA;
 % pAA2 => pA + A2
 r2 = p1;			p2 = r1;
 c2 = k_1;
@@ -59,7 +59,7 @@ c2 = k_1;
 % pA + B2 => pAB2
 r3 = base_vector;	p3 = base_vector;
 r3([1,15]) = 1;		p3(5) = 1;
-c3 = k2;
+c3 = k2/OMEGA;
 % pAB2 => pA + B2
 r4 = p3;			p4 = r3;
 c4 = k_2;
@@ -67,7 +67,7 @@ c4 = k_2;
 % pB + A2 => pBA2
 r5 = base_vector;	p5 = base_vector;
 r5([2,14]) = 1;		p5(6) = 1;
-c5 = k3;
+c5 = k3/OMEGA;
 % pBA2 => pB + A2
 r6 = p5;			p6 = r5;
 c6 = k_3;
@@ -75,7 +75,7 @@ c6 = k_3;
 % pB + E2 => pBE2
 r7 = base_vector;	p7 = base_vector;
 r7([2,16]) = 1;		p7(7) = 1;
-c7 = k4;
+c7 = k4/OMEGA;
 % pBE2 => pB + E2
 r8 = p7;			p8 = r7;
 c8 = k_4;
@@ -83,7 +83,7 @@ c8 = k_4;
 % pI + B2 => pIB2
 r9 = base_vector;	p9 = base_vector;
 r9([3,15]) = 1;		p9(8) = 1;
-c9 = k5;
+c9 = k5/OMEGA;
 % pIB2 => pI + B2
 r10 = p9;			p10 = r9;
 c10 = k_5;
@@ -91,7 +91,7 @@ c10 = k_5;
 % pI + I => pII
 r11 = base_vector;	p11 = base_vector;
 r11([3,13]) = 1;	p11(9) = 1;
-c11 = k6;
+c11 = k6/OMEGA;
 % pII => pI + I
 r12 = p11;			p12 = r11;
 c12 = k_6;
@@ -99,7 +99,7 @@ c12 = k_6;
 % 2A => A2
 r13 = base_vector;	p13 = base_vector;
 r13(10) = 2;		p13(14) = 1;
-c13 = k7;
+c13 = 2*k7/OMEGA;
 % A2 => 2A
 r14 = p13;			p14 = r13;
 c14 = k_7;
@@ -107,7 +107,7 @@ c14 = k_7;
 % 2B => B2
 r15 = base_vector;	p15 = base_vector;
 r15(11) = 2;		p15(15) = 1;
-c15 = k8;
+c15 = 2*k8/OMEGA;
 % B2 => 2B
 r16 = p15;			p16 = r15;
 c16 = k_8;
@@ -115,7 +115,7 @@ c16 = k_8;
 % 2E => E2
 r17 = base_vector;	p17 = base_vector;
 r17(12) = 2;		p17(16) = 1;
-c17 = k9;
+c17 = 2*k9/OMEGA;
 % E2 => 2E
 r18 = p17;			p18 = r17;
 c18 = k_9;
