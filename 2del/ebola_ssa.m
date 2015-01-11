@@ -19,6 +19,11 @@
 %function [X_mean] = inverter_ssa(t_end,t_step,X_init,observ,plot_on)
 
 pA_init=1;pB_init=0.4;pI_init=1;
+% pA_init=1;pB_init=1;pI_init=1;
+
+
+e_switch_point = 20;
+e_switch_d = 1000;
 t_end = 10000;
 t_step = 10;
 % IFN, A2, B2, E2
@@ -255,7 +260,7 @@ t = 0:t_step:(s-1)*t_step; % sample points are predefined by the step_size
 X_total = zeros(runs,length(observ),s); % data storage for all observed species over all runs
 
 for k=1:runs
-    [X] = ssa(constants,reactants,products,X_init,t_end,t_step);
+    [X] = ssa(constants,reactants,products,X_init,t_end,t_step, e_switch_point, e_switch_d);
    
     for l=1:length(observ)
         X_total(k,l,:)=X(observ(l),:);
