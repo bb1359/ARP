@@ -24,8 +24,8 @@ pA_init=1;pB_init=0.4;pI_init=1;
 
 e_switch_point = 20;
 e_switch_d = 1000;
-t_end = 10000;
-t_step = 10;
+t_end = 50;
+t_step = 0.5;
 % IFN, A2, B2, E2
 observ = 13:16;
 plot_on = true;
