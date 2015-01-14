@@ -3,7 +3,7 @@ clear
 
 ode_start = 0;
 ode_end = 100;
-ode_n = 5000;
+ode_n = 500;
 
 e_switch_point = 20;
 e_switch_d = 1000;
@@ -26,9 +26,9 @@ args = [e_switch_point;e_switch_d;pA_init;pB_init;pI_init;k1;k2;k3;k4;k5;k6;
 t2 = linspace(ode_start,ode_end,ode_n)';
 
 % run full
-what2run = 0;
+%what2run = 0;
 % run simple 
-%what2run = 1;
+what2run = 1;
 % run simpler
 %what2run = 2;
 % run simplest

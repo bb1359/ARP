@@ -2,14 +2,17 @@
 % [1  2  3  4  5  6  7  8  9  10]
 % [A  B  E  I  A2 B2 E2 mA mB mI]
 
-function dx = moskon_simple(x, t, args) 
+function dx = moskon_simple(x, t, args, initargs) 
 
     A = x(1); B = x(2); E = x(3); I = x(4);
     A2 = x(5); B2 = x(6); E2 = x(7);
     mA = x(8); mB = x(9); mI = x(10);
-    
+
     argsCell = num2cell(args);
-    [e_switch_point e_switch_d pA_init pB_init pI_init k1 k2 k3 k4 k5 k6 k_1 k_2 k_3 k_5 k_6 k_4 k7 k8 k9 k_7 k_8 k_9 b_a b_b b_i fi fi_a a_a a_b a_i g_a g_b g_i d_a d_b d_i d_e] = argsCell{:};
+    [k1 k2 k3 k4 k5 k6 k_1 k_2 k_3 k_5 k_6 k_4 k7 k8 k9 k_7 k_8 k_9 b_a b_b b_i fi fi_a a_a a_b a_i g_a g_b g_i d_a d_b d_i d_e] = argsCell{:};
+
+    initargsCell = num2cell(initargs);
+    [e_start e_len e_d pA_init pB_init pI_init] = initargsCell{:};
 
     % Fractional occupancy for pA %
     w0 = 1;
@@ -51,13 +54,16 @@ function dx = moskon_simple(x, t, args)
     pIB2 = p1*pI_init;
     pII  = p2*pI_init;
 
+    dx = zeros(10,1);
+
     % the rest of equations %
     dx(1) = -2*k7*A^2 + 2*k_7*A2 + g_a*mA - d_a*A;
     dx(2) = -2*k8*B^2 + 2*k_8*B2 + g_b*mB - d_b*B;
 
-    %switch tabs with spaces!
-    if (t > e_switch_point) && (t < e_switch_point+1) 
-      dx(3) = e_switch_d;
+    if ((t > e_start) && (t < e_start + 0.01))
+      dx(3) = e_d;
+    elseif ((t >= e_start) && (t < e_start + e_len))
+      dx(3) = 0;
     else
       dx(3) = -2*k9*E^2 + 2*k_9*E2 - d_e*E;
     end
