@@ -8,7 +8,7 @@
 % X: recorded states at these times
 %
 
-function [X] = ssa(c,reactants,products,x0,t_end,t_step, e_switch_point, e_switch_d)
+function [X] = ssa(c,reactants,products,x0,t_end,t_step)
 
 
 [m,n]=size(reactants);
@@ -207,11 +207,6 @@ while (t_proc < t_end)
             k=k+1;
         end;
         
-        % trigger E injection
-        if (t_proc > e_switch_point) && (t_proc < e_switch_point+1)
-            x(12) = x(12) + e_switch_d;
-        end
-
         % update state
         x_step = x;
         x = x+st(:,k);

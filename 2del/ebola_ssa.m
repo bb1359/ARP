@@ -10,28 +10,23 @@
 % observ: observed chemical species
 % plot_on: turns the plotting on
 %
-% Outputs:
-% X_mean: time course of observed chemical species
 %
-% sample call
-% inverter_ssa(10000,10,[50 1 0 0 0]',[5],1);
-% inverter_ssa(10000,10,[600 1 0 25 1200]',[5],1);
 %function [X_mean] = inverter_ssa(t_end,t_step,X_init,observ,plot_on)
 
-pA_init=1;pB_init=0.4;pI_init=1;
-% pA_init=1;pB_init=1;pI_init=1;
 
+pA_init=1;pB_init=1;pI_init=1;
+A_init = 100;
 
-e_switch_point = 20;
-e_switch_d = 1000;
-t_end = 50;
-t_step = 0.5;
+t_end = 25000;
+t_step = 10;
 % IFN, A2, B2, E2
-observ = 13:16;
+%observ = 13:16;
+% A, B, E, IFN
+observ = 10:13;
 plot_on = true;
 
 % average of how many runs?
-runs = 1;
+runs = 10;
 
 disp('SSA - ebola');
 
@@ -41,16 +36,17 @@ V=2*10^(-15); % cell volume
 OMEGA=A*V*10^(-9);  
 
 % parameters
-k1=1;k2=1;k3=1;k4=1;k5=1;k6=1;
-k_1=1;k_2=1;k_3=1;k_5=1;k_6=1;
-k_4=0.1;
-k7=1e-3;k8=k7;k9=k7;
-k_7=1;k_8=1;k_9=1;
-b_a=10;b_b=30;b_i=10;
+h = 3600;
+k1=1/h;k2=1/h;k3=1/h;k4=1/h;k5=1/h;k6=1/h;
+k_1=1/h;k_2=1/h;k_3=1/h;k_5=1/h;k_6=1/h;
+k_4=0.1/h;
+k7=1e-3/h;k8=k7;k9=k7;
+k_7=1/h;k_8=1/h;k_9=1/h;
+b_a=10/h;b_b=30/h;b_i=10/h;
 fi=50;fi_a=50;
-a_a=5;a_b=1;a_i=5;
-g_a=10;g_b=10;g_i=10;
-d_a=1;d_b=1;d_i=1;d_e=1;
+a_a=5/h;a_b=1/h;a_i=5/h;
+g_a=10/h;g_b=10/h;g_i=10/h;
+d_a=1/h;d_b=1/h;d_i=1/h;d_e=1/h;
 
 % -> define the reactions (i.e. the reactants and the products matrix)
 % [1  2  3  4    5    6    7    8    9   ...]
@@ -249,22 +245,54 @@ products = [p1;p2;p3;p4;p5;
 
 constants = [c1, c2, c3, c4, c5, c6, c7, c8, c9, c10, c11, c12, c13, c14, c15, c16, c17, c18, c19, c20, c21, c22, c23, c24, c25, c26, c27, c28, c29, c30,c31, c32, c33, c34, c35, c36, c37];
 
+% [1  2  3  4    5    6    7    8    9   ...]
+% [pA pB pI pAA2 pAB2 pBA2 pBE2 pIB2 pII ...]
+% [... 10 11 12 13 14 15 16 17 18 19]
+% [... A  B  E  I  A2 B2 E2 mA mB mI]
+
 % initialization
 X_init = base_vector';
 X_init(1) = pA_init;
 X_init(2) = pB_init;
 X_init(3) = pI_init;
+X_init(10) = A_init;
 
 s = floor(t_end / t_step)+1; % no of max. recorded steps
 t = 0:t_step:(s-1)*t_step; % sample points are predefined by the step_size
 X_total = zeros(runs,length(observ),s); % data storage for all observed species over all runs
 
+
+
 for k=1:runs
-    [X] = ssa(constants,reactants,products,X_init,t_end,t_step, e_switch_point, e_switch_d);
+    disp('Starting new run');
+    [X1] = ssa(constants,reactants,products,X_init,t_end/2,t_step);
    
+
+    X1(12,end)= X1(12,end) + 1000;
+    disp('Injecting 1000 E');
+    [X2] = ssa(constants,reactants,products,X1(:,end),t_end/2-t_step,t_step);
+    
+    [X] = [X1 X2];
+
     for l=1:length(observ)
         X_total(k,l,:)=X(observ(l),:);
     end;
+
+    if (plot_on==1)
+
+    disp('Plotting');
+
+    figure(k), plot(t, X_total(k,:,:));
+    xlabel('Time [s]');
+    ylabel('Number of molecules');
+    %legend('IFN', 'A2','B2','E2');
+    legend('A','B','E','IFN');
+    saveas(figure(1),sprintf('run%d.png',k));
+    box off;
+    
+    end
+
+    disp('Treatment simulation finished')
 end;
 
 X_mean = mean(X_total,1);
@@ -272,10 +300,14 @@ X_means = squeeze(X_mean);
 
 if (plot_on==1)
 
-    
-    figure(1), plot(t, X_means(:,:));
+    disp('Plotting mean');
+
+    figure(runs+1), plot(t, X_means(:,:));
     xlabel('Time [s]');
     ylabel('Number of molecules');
+    %legend('IFN', 'A2','B2','E2');
+    legend('A','B','E','IFN');
+    saveas(figure(1), 'mean.png');
     box off;
     
 end
