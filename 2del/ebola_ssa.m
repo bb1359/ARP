@@ -17,7 +17,8 @@
 pA_init=1;pB_init=1;pI_init=1;
 A_init = 100;
 
-t_end = 10^10;
+
+t_end = 10^8;
 t_step = 10;
 % IFN, A2, B2, E2
 %observ = 13:16;
@@ -287,7 +288,7 @@ for k=1:runs
     ylabel('Number of molecules');
     %legend('IFN', 'A2','B2','E2');
     legend('A','B','E','IFN');
-    saveas(figure(k),sprintf('1010run%d.png',k));
+    saveas(figure(k),sprintf('108run%d.png',k));
     box off;
     
     end
@@ -307,7 +308,7 @@ if (plot_on==1)
     ylabel('Number of molecules');
     %legend('IFN', 'A2','B2','E2');
     legend('A','B','E','IFN');
-    saveas(figure(runs+1), '1010mean.png');
+    saveas(figure(runs+1), '108mean.png');
     box off;
     
 end
