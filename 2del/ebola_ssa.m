@@ -17,7 +17,8 @@
 pA_init=1;pB_init=1;pI_init=1;
 A_init = 100;
 
-t_end = 25000;
+
+t_end = 10^8;
 t_step = 10;
 % E, IFN, A2, B2
 observ = 12:15;
@@ -285,12 +286,12 @@ for k=1:runs
 
     disp('Plotting');
 
-    figure(k), plot(t, X_total(k,:,:));
+    figure(k), plot(t, squeeze(X_total(k,:,:)));
     xlabel('Time [s]');
     ylabel('Number of molecules');
     legend('E', 'IFN', 'A2','B2');
     %legend('A','B','E','IFN');
-    saveas(figure(1),sprintf('run%d.png',k));
+    saveas(figure(k),sprintf('108run%d.png',k));
     box off;
     
     end
@@ -310,7 +311,7 @@ if (plot_on==1)
     ylabel('Number of molecules');
     legend('E', 'IFN', 'A2','B2');
     %legend('A','B','E','IFN');
-    saveas(figure(1), 'mean.png');
+    saveas(figure(runs+1), '108mean.png');
     box off;
     
 end
