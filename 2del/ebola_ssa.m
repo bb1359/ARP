@@ -19,10 +19,10 @@ A_init = 100;
 
 t_end = 25000;
 t_step = 10;
-% IFN, A2, B2, E2
-%observ = 13:16;
+% E, IFN, A2, B2
+observ = 12:15;
 % A, B, E, IFN
-observ = 10:13;
+%observ = 10:13;
 plot_on = true;
 
 % average of how many runs?
@@ -262,15 +262,18 @@ t = 0:t_step:(s-1)*t_step; % sample points are predefined by the step_size
 X_total = zeros(runs,length(observ),s); % data storage for all observed species over all runs
 
 
+disp('Borders before and after E injection');
+first_part = t_end/5
+second_part = t_end-first_part-t_step
 
 for k=1:runs
     disp('Starting new run');
-    [X1] = ssa(constants,reactants,products,X_init,t_end/2,t_step);
+    [X1] = ssa(constants,reactants,products,X_init,first_part,t_step);
    
 
     X1(12,end)= X1(12,end) + 1000;
     disp('Injecting 1000 E');
-    [X2] = ssa(constants,reactants,products,X1(:,end),t_end/2-t_step,t_step);
+    [X2] = ssa(constants,reactants,products,X1(:,end),second_part,t_step);
     
     [X] = [X1 X2];
 
@@ -285,8 +288,8 @@ for k=1:runs
     figure(k), plot(t, X_total(k,:,:));
     xlabel('Time [s]');
     ylabel('Number of molecules');
-    %legend('IFN', 'A2','B2','E2');
-    legend('A','B','E','IFN');
+    legend('E', 'IFN', 'A2','B2');
+    %legend('A','B','E','IFN');
     saveas(figure(1),sprintf('run%d.png',k));
     box off;
     
@@ -305,8 +308,8 @@ if (plot_on==1)
     figure(runs+1), plot(t, X_means(:,:));
     xlabel('Time [s]');
     ylabel('Number of molecules');
-    %legend('IFN', 'A2','B2','E2');
-    legend('A','B','E','IFN');
+    legend('E', 'IFN', 'A2','B2');
+    %legend('A','B','E','IFN');
     saveas(figure(1), 'mean.png');
     box off;
     
